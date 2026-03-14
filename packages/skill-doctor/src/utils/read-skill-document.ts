@@ -16,7 +16,9 @@ const PLAIN_PATH_PATTERN =
 
 const normalizeContent = (content: string): string => content.replace(/\r\n?/g, "\n");
 
-const parseFrontmatter = (content: string): {
+const parseFrontmatter = (
+  content: string,
+): {
   body: string;
   bodyStartLine: number;
   frontmatter: FrontmatterData;
@@ -74,7 +76,12 @@ const parseFrontmatter = (content: string): {
   }
 
   const parsedValue = document.toJS();
-  if (issues.length === 0 && parsedValue && typeof parsedValue === "object" && !Array.isArray(parsedValue)) {
+  if (
+    issues.length === 0 &&
+    parsedValue &&
+    typeof parsedValue === "object" &&
+    !Array.isArray(parsedValue)
+  ) {
     frontmatter.valid = true;
     frontmatter.data = parsedValue as Record<string, unknown>;
   } else if (issues.length === 0) {

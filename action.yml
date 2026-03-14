@@ -1,0 +1,56 @@
+name: "Skill Doctor"
+description: "Scan agent skills for static quality issues"
+branding:
+  icon: "activity"
+  color: "blue"
+
+inputs:
+  directory:
+    description: "Skill directory or workspace to scan"
+    default: "."
+  verbose:
+    description: "Show file details per finding"
+    default: "true"
+  fail-on:
+    description: "Exit with error code on diagnostics: error, warning, none"
+    default: "error"
+  strictness:
+    description: "Analysis strictness: default, strict, pedantic"
+    default: "default"
+  node-version:
+    description: "Node.js version to use"
+    default: "20"
+
+outputs:
+  score:
+    description: "Workspace score (0-100)"
+    value: ${{ steps.score.outputs.score }}
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+
+    - shell: bash
+      env:
+        INPUT_DIRECTORY: ${{ inputs.directory }}
+        INPUT_VERBOSE: ${{ inputs.verbose }}
+        INPUT_FAIL_ON: ${{ inputs.fail-on }}
+        INPUT_STRICTNESS: ${{ inputs.strictness }}
+      run: |
+        FLAGS="--fail-on $INPUT_FAIL_ON --strictness $INPUT_STRICTNESS"
+        if [ "$INPUT_VERBOSE" = "true" ]; then FLAGS="$FLAGS --verbose"; fi
+        npx -y skill-doctor@latest "$INPUT_DIRECTORY" $FLAGS
+
+    - id: score
+      if: always()
+      shell: bash
+      env:
+        INPUT_DIRECTORY: ${{ inputs.directory }}
+      run: |
+        SCORE=$(npx -y skill-doctor@latest "$INPUT_DIRECTORY" --score 2>/dev/null | tail -1 | tr -d '[:space:]')
+        if [[ -n "$SCORE" && "$SCORE" =~ ^[0-9]+$ ]]; then
+          echo "score=$SCORE" >> "$GITHUB_OUTPUT"
+        fi

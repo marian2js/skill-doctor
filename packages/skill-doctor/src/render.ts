@@ -6,7 +6,12 @@ import {
   SCORE_OK_THRESHOLD,
 } from "./constants.js";
 import { findRule } from "./rules.js";
-import type { Diagnostic, ScanOptions, SkillDiagnosisResult, WorkspaceDiagnosisResult } from "./types.js";
+import type {
+  Diagnostic,
+  ScanOptions,
+  SkillDiagnosisResult,
+  WorkspaceDiagnosisResult,
+} from "./types.js";
 import { colorizeByScore } from "./utils/colorize-by-score.js";
 import { createFramedLine, printFramedBox } from "./utils/framed-box.js";
 import { groupBy } from "./utils/group-by.js";
@@ -41,7 +46,9 @@ const formatElapsedTime = (elapsedMilliseconds: number): string => {
 };
 
 const formatFindingCount = (skill: SkillDiagnosisResult): string => {
-  const errorCount = skill.diagnostics.filter((diagnostic) => diagnostic.severity === "error").length;
+  const errorCount = skill.diagnostics.filter(
+    (diagnostic) => diagnostic.severity === "error",
+  ).length;
   const warningCount = skill.diagnostics.length - errorCount;
 
   if (errorCount === 0 && warningCount === 0) {
@@ -71,7 +78,9 @@ const printBranding = (score: number) => {
 };
 
 const printSummary = (result: WorkspaceDiagnosisResult) => {
-  const errorCount = result.diagnostics.filter((diagnostic) => diagnostic.severity === "error").length;
+  const errorCount = result.diagnostics.filter(
+    (diagnostic) => diagnostic.severity === "error",
+  ).length;
   const warningCount = result.diagnostics.length - errorCount;
   const healthySkillCount = result.skills.filter((skill) => skill.diagnostics.length === 0).length;
 
@@ -107,14 +116,19 @@ const printSkillTable = (skills: SkillDiagnosisResult[]) => {
 
   for (const skill of sortedSkills) {
     const paddedName = skill.skill.name.padEnd(skillColumnWidth);
-    const scoreText = colorizeByScore(String(skill.score.score).padStart(3, " "), skill.score.score);
+    const scoreText = colorizeByScore(
+      String(skill.score.score).padStart(3, " "),
+      skill.score.score,
+    );
     logger.log(`  ${paddedName}  ${scoreText}   ${formatFindingCount(skill)}`);
   }
 
   logger.break();
 };
 
-const sortDiagnosticGroups = (diagnosticGroups: [string, Diagnostic[]][]): [string, Diagnostic[]][] =>
+const sortDiagnosticGroups = (
+  diagnosticGroups: [string, Diagnostic[]][],
+): [string, Diagnostic[]][] =>
   [...diagnosticGroups].sort(([, diagnosticsA], [, diagnosticsB]) => {
     const severityA = SEVERITY_ORDER[diagnosticsA[0].severity];
     const severityB = SEVERITY_ORDER[diagnosticsB[0].severity];
@@ -141,7 +155,8 @@ const printDiagnosticGroups = (skill: SkillDiagnosisResult, options: ScanOptions
 
   for (const [ruleId, diagnostics] of sortedGroups) {
     const firstDiagnostic = diagnostics[0];
-    const icon = firstDiagnostic.severity === "error" ? highlighter.error("✗") : highlighter.warn("⚠");
+    const icon =
+      firstDiagnostic.severity === "error" ? highlighter.error("✗") : highlighter.warn("⚠");
     const countLabel = diagnostics.length > 1 ? highlighter.dim(` (${diagnostics.length})`) : "";
     const rule = findRule(ruleId);
     const locationSummary = formatLocation(skill, firstDiagnostic);
@@ -158,7 +173,8 @@ const printDiagnosticGroups = (skill: SkillDiagnosisResult, options: ScanOptions
         logger.dim(`    ${formatLocation(skill, diagnostic)}`);
       }
     } else {
-      const suffix = diagnostics.length > 1 ? ` ${highlighter.dim(`(+${diagnostics.length - 1} more)`)}` : "";
+      const suffix =
+        diagnostics.length > 1 ? ` ${highlighter.dim(`(+${diagnostics.length - 1} more)`)}` : "";
       logger.dim(`    ${locationSummary}${suffix}`);
     }
 
@@ -173,7 +189,9 @@ export const printTextReport = (result: WorkspaceDiagnosisResult, options: ScanO
 
   const skillsWithFindings = result.skills.filter((skill) => skill.diagnostics.length > 0);
   if (skillsWithFindings.length === 0) {
-    logger.success(`No issues found across ${result.skills.length} skill${result.skills.length === 1 ? "" : "s"}.`);
+    logger.success(
+      `No issues found across ${result.skills.length} skill${result.skills.length === 1 ? "" : "s"}.`,
+    );
     return;
   }
 

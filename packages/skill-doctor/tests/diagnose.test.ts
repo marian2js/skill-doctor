@@ -150,6 +150,8 @@ description: Use this skill when the user asks for ignored things.
 
     expect(result.skills).toHaveLength(2);
     expect(result.skills.map((skill) => skill.skill.name)).toEqual(["skill-one", "skill-two"]);
-    expect(result.skippedPaths.some((skippedPath) => skippedPath.includes("node_modules"))).toBe(true);
+    expect(result.skippedPaths.some((skippedPath) => skippedPath.includes("node_modules"))).toBe(
+      true,
+    );
   });
 });

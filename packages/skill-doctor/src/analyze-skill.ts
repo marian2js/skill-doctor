@@ -1,9 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import {
-  rules,
-  severityForRule,
-} from "./rules.js";
+import { rules, severityForRule } from "./rules.js";
 import type {
   Diagnostic,
   RuleDefinition,
@@ -34,8 +31,7 @@ const normalizeHeading = (heading: string): string =>
     .replace(/[^\w\s-]/g, "")
     .replace(/\s+/g, " ");
 
-const isKebabCase = (value: string): boolean =>
-  /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value);
+const isKebabCase = (value: string): boolean => /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value);
 
 const getRelativePath = (filePath: string, rootDirectory: string): string => {
   const relativePath = path.relative(rootDirectory, filePath);
@@ -83,7 +79,9 @@ const collectReferenceDiagnostics = (
     const resolvedPath = path.resolve(skill.rootDirectory, cleanedDestination);
     const relativeToRoot = path.relative(skill.rootDirectory, resolvedPath);
     const escapesRoot =
-      relativeToRoot === "" ? false : relativeToRoot.startsWith("..") || path.isAbsolute(relativeToRoot);
+      relativeToRoot === ""
+        ? false
+        : relativeToRoot.startsWith("..") || path.isAbsolute(relativeToRoot);
 
     if (escapesRoot) {
       diagnostics.push(
@@ -100,7 +98,8 @@ const collectReferenceDiagnostics = (
     }
 
     if (!fs.existsSync(resolvedPath)) {
-      const rule = reference.source === "link" ? rules.brokenLocalLink : rules.missingMentionedResource;
+      const rule =
+        reference.source === "link" ? rules.brokenLocalLink : rules.missingMentionedResource;
       diagnostics.push(
         createDiagnostic(
           rule,
@@ -328,7 +327,10 @@ const collectEvalsDiagnostics = (skill: SkillInfo, strictness: Strictness): Diag
     }
 
     if (expectations !== undefined) {
-      if (!Array.isArray(expectations) || !expectations.every((entry) => typeof entry === "string")) {
+      if (
+        !Array.isArray(expectations) ||
+        !expectations.every((entry) => typeof entry === "string")
+      ) {
         diagnostics.push(
           createDiagnostic(
             rules.invalidEvalExpectations,
@@ -384,7 +386,11 @@ const addFrontmatterDiagnostics = (
   }
 
   for (const key of Object.keys(document.frontmatter.data)) {
-    if (!["name", "description", "compatibility", "allowed-tools", "license", "metadata"].includes(key)) {
+    if (
+      !["name", "description", "compatibility", "allowed-tools", "license", "metadata"].includes(
+        key,
+      )
+    ) {
       diagnostics.push(
         createDiagnostic(
           rules.unexpectedFrontmatterKey,
@@ -523,7 +529,9 @@ const addBodyDiagnostics = (
   diagnostics: Diagnostic[],
 ) => {
   const relativeSkillFilePath = getRelativePath(document.skillFilePath, skill.rootDirectory);
-  const nonEmptyBodyLines = document.body.split("\n").filter((line) => NON_EMPTY_LINE_PATTERN.test(line));
+  const nonEmptyBodyLines = document.body
+    .split("\n")
+    .filter((line) => NON_EMPTY_LINE_PATTERN.test(line));
 
   if (nonEmptyBodyLines.length < 8 || document.body.trim().length < 180) {
     diagnostics.push(
@@ -590,7 +598,10 @@ const addBodyDiagnostics = (
   }
 };
 
-export const analyzeSkill = (rootDirectory: string, strictness: Strictness): SkillDiagnosisResult => {
+export const analyzeSkill = (
+  rootDirectory: string,
+  strictness: Strictness,
+): SkillDiagnosisResult => {
   const skillFilePath = path.join(rootDirectory, "SKILL.md");
   const inventory = inspectSkillInventory(rootDirectory);
   const exists = fs.existsSync(skillFilePath);
@@ -622,7 +633,9 @@ export const analyzeSkill = (rootDirectory: string, strictness: Strictness): Ski
 
   const document = readSkillDocument(rootDirectory);
   const frontmatterName =
-    typeof document.frontmatter.data.name === "string" ? document.frontmatter.data.name.trim() : null;
+    typeof document.frontmatter.data.name === "string"
+      ? document.frontmatter.data.name.trim()
+      : null;
   const skill: SkillInfo = {
     ...baseSkill,
     name: frontmatterName && frontmatterName.length > 0 ? frontmatterName : placeholderName,

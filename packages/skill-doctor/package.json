@@ -7,16 +7,28 @@
     "cli",
     "diagnostics",
     "lint",
-    "skills"
+    "llm",
+    "prompt-engineering",
+    "skills",
+    "static-analysis"
   ],
+  "homepage": "https://github.com/marian2js/skill-doctor#readme",
+  "bugs": {
+    "url": "https://github.com/marian2js/skill-doctor/issues"
+  },
   "license": "MIT",
-  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marian2js/skill-doctor.git",
+    "directory": "packages/skill-doctor"
+  },
   "bin": {
     "skill-doctor": "./dist/cli.js"
   },
   "files": [
     "dist"
   ],
+  "type": "module",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

@@ -1,10 +1,26 @@
 {
   "name": "skill-doctor-workspace",
   "private": true,
-  "packageManager": "pnpm@10.17.0",
+  "homepage": "https://github.com/marian2js/skill-doctor#readme",
+  "bugs": {
+    "url": "https://github.com/marian2js/skill-doctor/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marian2js/skill-doctor.git"
+  },
   "scripts": {
     "build": "pnpm -r build",
+    "lint": "oxlint packages/skill-doctor/src packages/skill-doctor/tests",
+    "lint:fix": "oxlint --fix packages/skill-doctor/src packages/skill-doctor/tests",
+    "format": "oxfmt --write .",
+    "format:check": "oxfmt --check .",
     "test": "pnpm -r test",
     "typecheck": "pnpm -r typecheck"
-  }
+  },
+  "devDependencies": {
+    "oxfmt": "^0.32.0",
+    "oxlint": "^1.47.0"
+  },
+  "packageManager": "pnpm@10.17.0"
 }

@@ -8,7 +8,8 @@ export interface DiscoveryResult {
   skippedPaths: string[];
 }
 
-const sortPaths = (paths: string[]): string[] => [...paths].sort((left, right) => left.localeCompare(right));
+const sortPaths = (paths: string[]): string[] =>
+  [...paths].sort((left, right) => left.localeCompare(right));
 
 const discoverRecursive = (directory: string, roots: Set<string>, skippedPaths: Set<string>) => {
   const entries = fs.readdirSync(directory, { withFileTypes: true });

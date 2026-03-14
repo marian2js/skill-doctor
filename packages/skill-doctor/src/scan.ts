@@ -3,12 +3,7 @@ import path from "node:path";
 import { performance } from "node:perf_hooks";
 import { analyzeSkill } from "./analyze-skill.js";
 import { rules, severityForRule } from "./rules.js";
-import type {
-  DiagnoseOptions,
-  Diagnostic,
-  SkillInfo,
-  WorkspaceDiagnosisResult,
-} from "./types.js";
+import type { DiagnoseOptions, Diagnostic, SkillInfo, WorkspaceDiagnosisResult } from "./types.js";
 import { discoverSkills } from "./utils/discover-skills.js";
 import { averageScore, calculateScore } from "./utils/score.js";
 

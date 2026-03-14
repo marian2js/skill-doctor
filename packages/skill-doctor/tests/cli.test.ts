@@ -28,10 +28,14 @@ Read [missing reference](references/missing.md).
     });
     tempRoots.push(root);
 
-    const result = spawnSync(process.execPath, [cliPath, path.join(root, "warn-skill"), "--fail-on", "warning"], {
-      encoding: "utf8",
-      env: { ...process.env, NO_COLOR: "1" },
-    });
+    const result = spawnSync(
+      process.execPath,
+      [cliPath, path.join(root, "warn-skill"), "--fail-on", "warning"],
+      {
+        encoding: "utf8",
+        env: { ...process.env, NO_COLOR: "1" },
+      },
+    );
 
     expect(result.status).toBe(1);
     expect(result.stdout).toContain("Skill Doctor");
@@ -65,11 +69,15 @@ Keep the tone factual and concise.
     });
     tempRoots.push(root);
 
-    const stdout = execFileSync(process.execPath, [cliPath, path.join(root, "json-skill"), "--format", "json"], {
-      encoding: "utf8",
-      env: { ...process.env, NO_COLOR: "1" },
-      maxBuffer: 1024 * 1024,
-    });
+    const stdout = execFileSync(
+      process.execPath,
+      [cliPath, path.join(root, "json-skill"), "--format", "json"],
+      {
+        encoding: "utf8",
+        env: { ...process.env, NO_COLOR: "1" },
+        maxBuffer: 1024 * 1024,
+      },
+    );
 
     const payload = JSON.parse(stdout) as {
       score: { score: number };

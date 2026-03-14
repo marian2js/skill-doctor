@@ -18,7 +18,11 @@ const program = new Command()
   .description("Diagnose static quality issues in agent skills")
   .version(VERSION, "-v, --version", "display the version number")
   .argument("[directory]", "skill directory or workspace to scan", ".")
-  .addOption(new Option("--format <format>", "output format: text or json").choices(["text", "json"]).default("text"))
+  .addOption(
+    new Option("--format <format>", "output format: text or json")
+      .choices(["text", "json"])
+      .default("text"),
+  )
   .addOption(
     new Option("--fail-on <level>", "exit with error code on diagnostics: error, warning, none")
       .choices(["error", "warning", "none"])
