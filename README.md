@@ -58,6 +58,12 @@ metadata • bundle integrity • trigger quality • eval hygiene
 
 17 skills scanned • 15 healthy • 0 errors • 2 warnings • 28ms
 ████████████████████████
+
+workspace overview
+name                   score   findings
+theme-factory           94   1 warn
+webapp-testing          94   1 warn
+algorithmic-art        100   clean
 ```
 
 ## GitHub Actions
