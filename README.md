@@ -52,13 +52,12 @@ npx -y skill-doctor@latest . --format json
 ## Example output
 
 ```text
-skill doctor
+skill doctor                                        99 excellent
 static diagnostics for agent skills
+metadata • bundle integrity • trigger quality • eval hygiene
 
-score      99 / 100 Excellent
-coverage   17 skills • 15 healthy
-findings   0 errors • 2 warnings
-time       28ms
+17 skills scanned • 15 healthy • 0 errors • 2 warnings • 28ms
+████████████████████████
 ```
 
 ## GitHub Actions
