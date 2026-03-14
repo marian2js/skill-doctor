@@ -1,0 +1,44 @@
+{
+  "name": "skill-doctor",
+  "version": "0.1.0",
+  "description": "Diagnose static quality issues in agent skills",
+  "keywords": [
+    "agent-skills",
+    "cli",
+    "diagnostics",
+    "lint",
+    "skills"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "skill-doctor": "./dist/cli.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "dev": "tsdown --watch",
+    "build": "rm -rf dist && NODE_ENV=production tsdown",
+    "typecheck": "tsc --noEmit",
+    "test": "pnpm build && vitest run"
+  },
+  "dependencies": {
+    "commander": "^14.0.3",
+    "ora": "^9.3.0",
+    "picocolors": "^1.1.1",
+    "yaml": "^2.8.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.6.0",
+    "tsdown": "^0.20.3",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
+  }
+}
