@@ -1,10 +1,6 @@
 import path from "node:path";
-import {
-  PERFECT_SCORE,
-  SCORE_BAR_WIDTH_CHARS,
-  SCORE_GOOD_THRESHOLD,
-  SCORE_OK_THRESHOLD,
-} from "./constants.js";
+import pc from "picocolors";
+import { PERFECT_SCORE, SCORE_BAR_WIDTH_CHARS } from "./constants.js";
 import { findRule } from "./rules.js";
 import type {
   Diagnostic,
@@ -13,7 +9,6 @@ import type {
   WorkspaceDiagnosisResult,
 } from "./types.js";
 import { colorizeByScore } from "./utils/colorize-by-score.js";
-import { createFramedLine, printFramedBox } from "./utils/framed-box.js";
 import { groupBy } from "./utils/group-by.js";
 import { highlighter } from "./utils/highlighter.js";
 import { indentMultilineText } from "./utils/indent-multiline-text.js";
@@ -32,10 +27,11 @@ const buildScoreBar = (score: number): string => {
   return colorizeByScore(filled, score) + highlighter.dim(empty);
 };
 
-const getDoctorFace = (score: number): string[] => {
-  if (score >= SCORE_GOOD_THRESHOLD) return ["◠ ◠", " ▽ "];
-  if (score >= SCORE_OK_THRESHOLD) return ["• •", " ─ "];
-  return ["x x", " ▽ "];
+const createChip = (label: string, tone: "info" | "success" | "warning" | "neutral"): string => {
+  if (tone === "info") return pc.bold(pc.bgCyan(pc.black(` ${label} `)));
+  if (tone === "success") return pc.bold(pc.bgGreen(pc.black(` ${label} `)));
+  if (tone === "warning") return pc.bold(pc.bgYellow(pc.black(` ${label} `)));
+  return pc.bold(pc.bgWhite(pc.black(` ${label} `)));
 };
 
 const formatElapsedTime = (elapsedMilliseconds: number): string => {
@@ -67,13 +63,11 @@ const formatFindingCount = (skill: SkillDiagnosisResult): string => {
 };
 
 const printBranding = (score: number) => {
-  const [eyes, mouth] = getDoctorFace(score);
-  const colorize = (text: string) => colorizeByScore(text, score);
-  logger.log(colorize("  ┌─────┐"));
-  logger.log(colorize(`  │ ${eyes} │`));
-  logger.log(colorize(`  │ ${mouth} │`));
-  logger.log(colorize("  └─────┘"));
-  logger.log(`  Skill Doctor ${highlighter.dim("(static skill diagnostics)")}`);
+  logger.log(`  ${pc.bold(colorizeByScore("skill doctor", score))}`);
+  logger.log(`  ${highlighter.dim("static diagnostics for agent skills")}`);
+  logger.log(
+    `  ${createChip("metadata", "info")} ${createChip("bundle", "success")} ${createChip("triggers", "warning")} ${createChip("evals", "neutral")}`,
+  );
   logger.break();
 };
 
@@ -83,20 +77,18 @@ const printSummary = (result: WorkspaceDiagnosisResult) => {
   ).length;
   const warningCount = result.diagnostics.length - errorCount;
   const healthySkillCount = result.skills.filter((skill) => skill.diagnostics.length === 0).length;
+  const findingsTone = errorCount > 0 ? "warning" : warningCount > 0 ? "warning" : "success";
 
-  printFramedBox([
-    createFramedLine(
-      `Score: ${result.score.score} / ${PERFECT_SCORE} ${result.score.label}`,
-      `Score: ${colorizeByScore(`${result.score.score}`, result.score.score)} / ${PERFECT_SCORE} ${colorizeByScore(result.score.label, result.score.score)}`,
-    ),
-    createFramedLine(`Skills: ${result.skills.length}`),
-    createFramedLine(`Healthy: ${healthySkillCount}`),
-    createFramedLine(`Errors: ${errorCount}`),
-    createFramedLine(`Warnings: ${warningCount}`),
-    createFramedLine(`Time: ${formatElapsedTime(result.elapsedMilliseconds)}`),
-  ]);
-
-  logger.break();
+  logger.log(
+    `  ${createChip("score", "info")} ${colorizeByScore(`${result.score.score}`, result.score.score)} / ${PERFECT_SCORE} ${colorizeByScore(result.score.label, result.score.score)}`,
+  );
+  logger.log(
+    `  ${createChip("coverage", "neutral")} ${result.skills.length} skills • ${healthySkillCount} healthy`,
+  );
+  logger.log(
+    `  ${createChip("findings", findingsTone)} ${errorCount} errors • ${warningCount} warnings`,
+  );
+  logger.log(`  ${createChip("time", "neutral")} ${formatElapsedTime(result.elapsedMilliseconds)}`);
   logger.log(`  ${buildScoreBar(result.score.score)}`);
   logger.break();
 };
@@ -111,8 +103,10 @@ const printSkillTable = (skills: SkillDiagnosisResult[]) => {
 
   const skillColumnWidth = Math.max(...sortedSkills.map((skill) => skill.skill.name.length), 5);
 
-  logger.log("  Skill".padEnd(skillColumnWidth + 4) + "Score  Findings");
-  logger.log(`  ${highlighter.dim("─".repeat(skillColumnWidth + 23))}`);
+  logger.log(`  ${createChip("workspace", "neutral")} skill overview`);
+  logger.log(
+    `  ${highlighter.dim("name".padEnd(skillColumnWidth + 2))}${highlighter.dim("score".padEnd(8))}${highlighter.dim("findings")}`,
+  );
 
   for (const skill of sortedSkills) {
     const paddedName = skill.skill.name.padEnd(skillColumnWidth);
@@ -195,7 +189,7 @@ export const printTextReport = (result: WorkspaceDiagnosisResult, options: ScanO
     return;
   }
 
-  logger.log("Findings");
+  logger.log(`  ${createChip("findings", "warning")} details`);
   logger.break();
 
   for (const skill of skillsWithFindings) {

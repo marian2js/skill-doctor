@@ -38,8 +38,8 @@ Read [missing reference](references/missing.md).
     );
 
     expect(result.status).toBe(1);
-    expect(result.stdout).toContain("Skill Doctor");
-    expect(result.stdout).toContain("Findings");
+    expect(result.stdout).toContain("skill doctor");
+    expect(result.stdout).toContain("details");
     expect(result.stdout).toContain("references/missing.md");
   });
 

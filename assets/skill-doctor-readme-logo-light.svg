@@ -1,11 +1,16 @@
-<svg width="420" height="96" viewBox="0 0 420 96" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="420" height="96" rx="24" fill="#F5F6F7"/>
-  <rect x="20" y="18" width="60" height="60" rx="18" fill="#0F172A"/>
-  <path d="M38 48C38 40.268 44.268 34 52 34C59.732 34 66 40.268 66 48V52C66 59.732 59.732 66 52 66C44.268 66 38 59.732 38 52V48Z" fill="#6EE7B7"/>
-  <path d="M48 49H56" stroke="#0F172A" stroke-width="4" stroke-linecap="round"/>
-  <path d="M108 38H242" stroke="#0F172A" stroke-width="10" stroke-linecap="round"/>
-  <path d="M108 60H182" stroke="#334155" stroke-width="10" stroke-linecap="round"/>
-  <path d="M263 33H309.728C320.21 33 328.708 41.498 328.708 51.98C328.708 62.462 320.21 70.96 309.728 70.96H293.7V51.476H309.12C312.361 51.476 314.988 48.849 314.988 45.608C314.988 42.367 312.361 39.74 309.12 39.74H277.756V70.96H263V33Z" fill="#0F172A"/>
-  <path d="M339.941 33H354.697V70.96H339.941V33ZM347.319 27.64C342.813 27.64 339.118 24.334 339.118 20.114C339.118 15.894 342.813 12.588 347.319 12.588C351.826 12.588 355.52 15.894 355.52 20.114C355.52 24.334 351.826 27.64 347.319 27.64Z" fill="#0F172A"/>
-  <path d="M366.914 70.96V33H381.67V37.72C384.49 34.078 388.929 31.92 394.801 31.92C405.686 31.92 412.411 39.308 412.411 50.564V70.96H397.654V52.628C397.654 46.727 394.634 43.365 389.425 43.365C383.962 43.365 381.67 47.141 381.67 52.763V70.96H366.914Z" fill="#0F172A"/>
+<svg width="520" height="128" viewBox="0 0 520 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="520" height="128" rx="28" fill="#F6FAF8"/>
+  <g transform="translate(28 20)">
+    <rect x="14" y="0" width="72" height="72" rx="18" stroke="#14B8A6" stroke-width="4"/>
+    <rect x="0" y="14" width="72" height="72" rx="18" stroke="#0F172A" stroke-width="4" opacity="0.92"/>
+    <path d="M18 50H30L38 34L48 62L60 42H76" stroke="#14B8A6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="82" cy="42" r="5" fill="#0F172A"/>
+    <circle cx="13" cy="13" r="4" fill="#14B8A6"/>
+    <circle cx="85" cy="73" r="4" fill="#14B8A6"/>
+  </g>
+  <text x="146" y="54" fill="#0F172A" font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="36" font-weight="700" letter-spacing="-1.2">skill doctor</text>
+  <text x="146" y="86" fill="#475569" font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="16" font-weight="500">static diagnostics for agent skills</text>
+  <rect x="146" y="96" width="84" height="10" rx="5" fill="#14B8A6"/>
+  <rect x="238" y="96" width="56" height="10" rx="5" fill="#0F172A" opacity="0.9"/>
+  <rect x="302" y="96" width="68" height="10" rx="5" fill="#14B8A6" opacity="0.55"/>
 </svg>

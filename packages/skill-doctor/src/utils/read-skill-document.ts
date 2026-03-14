@@ -105,7 +105,7 @@ const collectDocumentSignals = (
   bodyStartLine: number,
 ): Pick<SkillDocument, "codeFenceCount" | "headings" | "resourceReferences"> => {
   const headings: Heading[] = [];
-  const resourceReferences: ResourceReference[] = [];
+  const resourceReferenceMap = new Map<string, ResourceReference>();
   const lines = body.split("\n");
 
   let insideFence = false;
@@ -132,7 +132,7 @@ const collectDocumentSignals = (
       }
 
       for (const match of rawLine.matchAll(MARKDOWN_LINK_PATTERN)) {
-        resourceReferences.push({
+        resourceReferenceMap.set(`${lineNumber}:${match[1]}`, {
           destination: match[1],
           line: lineNumber,
           source: "link",
@@ -141,22 +141,28 @@ const collectDocumentSignals = (
 
       for (const match of rawLine.matchAll(PLAIN_PATH_PATTERN)) {
         const destination = match[1].replace(/[.,:;]+$/, "");
-        resourceReferences.push({
-          destination,
-          line: lineNumber,
-          source: "plain-path",
-        });
+        const referenceKey = `${lineNumber}:${destination}`;
+        if (!resourceReferenceMap.has(referenceKey)) {
+          resourceReferenceMap.set(referenceKey, {
+            destination,
+            line: lineNumber,
+            source: "plain-path",
+          });
+        }
       }
     }
 
     for (const match of rawLine.matchAll(CODE_SPAN_PATTERN)) {
       const codeSpan = match[1];
       if (/^(agents|assets|references|scripts)\//.test(codeSpan)) {
-        resourceReferences.push({
-          destination: codeSpan,
-          line: lineNumber,
-          source: "code-span",
-        });
+        const referenceKey = `${lineNumber}:${codeSpan}`;
+        if (!resourceReferenceMap.has(referenceKey)) {
+          resourceReferenceMap.set(referenceKey, {
+            destination: codeSpan,
+            line: lineNumber,
+            source: "code-span",
+          });
+        }
       }
     }
   }
@@ -164,7 +170,7 @@ const collectDocumentSignals = (
   return {
     codeFenceCount,
     headings,
-    resourceReferences,
+    resourceReferences: [...resourceReferenceMap.values()],
   };
 };
 

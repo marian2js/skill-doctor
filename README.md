@@ -52,20 +52,13 @@ npx -y skill-doctor@latest . --format json
 ## Example output
 
 ```text
-  ┌─────┐
-  │ ◠ ◠ │
-  │  ▽  │
-  └─────┘
-  Skill Doctor (static skill diagnostics)
+skill doctor
+static diagnostics for agent skills
 
- ┌─────────────────────────────┐
- │  Score: 99 / 100 Excellent  │
- │  Skills: 17                 │
- │  Healthy: 15                │
- │  Errors: 0                  │
- │  Warnings: 2                │
- │  Time: 28ms                 │
- └─────────────────────────────┘
+score      99 / 100 Excellent
+coverage   17 skills • 15 healthy
+findings   0 errors • 2 warnings
+time       28ms
 ```
 
 ## GitHub Actions
