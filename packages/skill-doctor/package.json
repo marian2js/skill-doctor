@@ -35,9 +35,13 @@
       "default": "./dist/index.js"
     }
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "dev": "tsdown --watch",
     "build": "rm -rf dist && NODE_ENV=production tsdown",
+    "pack:check": "npm pack --dry-run",
     "typecheck": "tsc --noEmit",
     "test": "pnpm build && vitest run"
   },

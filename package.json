@@ -15,6 +15,7 @@
     "lint:fix": "oxlint --fix packages/skill-doctor/src packages/skill-doctor/tests",
     "format": "oxfmt --write .",
     "format:check": "oxfmt --check .",
+    "release:check": "pnpm --filter skill-doctor build && cd packages/skill-doctor && npm pack --dry-run",
     "test": "pnpm -r test",
     "typecheck": "pnpm -r typecheck"
   },
